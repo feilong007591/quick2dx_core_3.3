@@ -9,6 +9,9 @@ require "core.events.FunctionData"
 require "core.events.EventDispatcher"
 require "core.events.GameDispatcher"
 
+--template
+require "core.template.BaseTemplate"
+
 --utils
 require "core.utils.CommonDefine"
 

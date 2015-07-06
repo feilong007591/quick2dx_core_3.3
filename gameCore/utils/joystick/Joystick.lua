@@ -19,6 +19,11 @@ function Joystick:ctor()
     joysticks[self._name] = self
 end
 
+--设置皮肤，不调用此方法设置则绘制默认形状
+function Joystick:setSkin(bgFile,barFile)
+
+end
+
 --获取当前指向的方向方向
 function Joystick:getDirection()
     return 0

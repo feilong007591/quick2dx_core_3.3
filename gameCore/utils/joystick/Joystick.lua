@@ -4,6 +4,7 @@
 --
 
 local DEFAULT_NAME = "Joystick"
+
 local joysticks = {} --虚拟摇杆列表
 
 Joystick = class("Joystick", function(self,name)

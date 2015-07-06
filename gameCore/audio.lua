@@ -165,9 +165,9 @@ function audio.playMusic(filename, isLoop)
     if type(isLoop) ~= "boolean" then isLoop = true end
     audio.bgFilename = filename
     audio.stopMusic()
-    if(not gameData.data.musicToggle)then
-        return
-    end
+    -- if(not gameData.data.musicToggle)then
+    --     return
+    -- end
     if DEBUG > 1 then
         printInfo("audio.playMusic() - filename: %s, isLoop: %s", tostring(filename), tostring(isLoop))
     end
@@ -290,9 +290,9 @@ function audio.playSound(filename, isLoop)
         printError("audio.playSound() - invalid filename")
         return
     end
-    if(not gameData.data.soundToggle)then
-        return
-    end
+    -- if(not gameData.data.soundToggle)then
+        -- return
+    -- end
     if type(isLoop) ~= "boolean" then isLoop = false end
     if DEBUG > 1 then
         printInfo("audio.playSound() - filename: %s, isLoop: %s", tostring(filename), tostring(isLoop))

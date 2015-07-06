@@ -9,7 +9,7 @@ function addCustomEventListener(eventName,callback)
     cc.Director:getInstance():getEventDispatcher().addCustomEventListener(eventName,callback)
 end
 
---ccui.Button添加点击事件
+--ccui.Button添加点击事件  callback（tag）
 function addButtonClickHandler(button,callback,playSound)
     if(nil == playSound)then
         playSound = true
@@ -20,25 +20,7 @@ function addButtonClickHandler(button,callback,playSound)
     local function touchHandler(obj,type)
         if type == ccui.TouchEventType.ended then
             if(playSound)then
-                audio.playSound(MUSIC_BTN_SND, false)
-            end
-            callback()
-        end
-    end
-    button:addTouchEventListener(touchHandler)
-end
-
---ccui.Button  callback（tagnum） 带参数 添加点击事件
-function addButtonClickHandler2(button,callback,playSound)
-    if(nil == playSound)then
-        playSound = true
-    else
-        playSound = false
-    end
-    local function touchHandler(obj,type)
-        if type == ccui.TouchEventType.ended then
-            if(playSound)then
-                audio.playSound(MUSIC_BTN_SND, false)
+                -- audio.playSound(MUSIC_BTN_SND, false)
             end
             local tagnum = obj:getTag()
             callback(tagnum)

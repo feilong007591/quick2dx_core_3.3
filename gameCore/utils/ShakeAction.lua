@@ -6,7 +6,7 @@
 -- /**
 -- * 按指定频度范围内抖动[-strength_x,strength_x][-strength_y, strength_y]
 -- */
-function fgRangeRand(min, max)
+local function fgRangeRand(min, max)
 	local rnd = math.random()
 	return rnd*(max - min) + min
 end

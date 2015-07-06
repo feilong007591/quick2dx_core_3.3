@@ -3,17 +3,23 @@
 -- Date: 2015-05-12 22:05:20
 --
 
+--conf
+require "gameCore.conf.CommonConf"
+
 --events
-require "core.events.BaseEvent"
-require "core.events.FunctionData"
-require "core.events.EventDispatcher"
-require "core.events.GameDispatcher"
+require "gameCore.events.BaseEvent"
+require "gameCore.events.FunctionData"
+require "gameCore.events.EventDispatcher"
+require "gameCore.events.GameDispatcher"
 
 --template
-require "core.template.BaseTemplate"
+require "gameCore.template.BaseTemplate"
 
 --utils
-require "core.utils.CommonDefine"
+require "gameCore.utils.CommonDefine"
+require "gameCore.utils.ShakeAction"
+
+require "gameCore.utils.joystick.Joystick"
 
 cc.utils = require("framework.cc.utils.init")
 ByteArray = cc.utils.ByteArray
@@ -22,7 +28,7 @@ ByteArrayVarint = cc.utils.ByteArrayVarint
 
 gameDispatcher = GameDispatcher:new()
 
-audio = require("core.audio")
+audio = require("gameCore.audio")
 audio:initEvent()
 
 scheduler = require("framework.scheduler")

@@ -35,26 +35,51 @@ local audio = {}
 local sharedEngine = cc.SimpleAudioEngine:getInstance()
 
 
+audio.AUDIO_SOUND = 20000
+audio.AUDIO_MUSIC = 20001
 audio.bgFilename = nil
 audio.soundHandle = nil
+audio.isOpenSound = 1
+audio.isOpenMusic = 1
 -- start --
 
 function audio.initEvent()
-    local function soundToggle()
-        if(not gameData.data.soundToggle)then
-            
-        end
+    local initsound = CommonUtils:hasData(audio.AUDIO_SOUND)
+    if not initsound then
+        CommonUtils:saveData(audio.AUDIO_SOUND,1)
     end
-    local function musicToggle()
-        if(gameData.data.musicToggle)then
-            audio.playMusic(audio.bgFilename,true)
-        else
-            audio.stopMusic()
-        end
+    local initmusic = CommonUtils:hasData(audio.AUDIO_MUSIC)
+    if not initmusic then
+        CommonUtils:saveData(audio.AUDIO_MUSIC,1)
     end
 
-    gameDispatcher:addEventListener(EVENT_SOUND_TOGGLE_CHANGE, soundToggle, self)
-    gameDispatcher:addEventListener(EVENT_MUSIC_TOGGLE_CHANGE, musicToggle, self)
+    audio.isOpenSound = CommonUtils:getIntData(audio.AUDIO_SOUND)
+    audio.isOpenMusic = CommonUtils:getIntData(audio.AUDIO_MUSIC)
+end
+
+
+--通过设置界面开关，改变音乐状态
+function audio.changeToggle(audioType)
+    if audio.AUDIO_SOUND == audioType then
+         audio.isOpenSound = CommonUtils:getIntData(audio.AUDIO_SOUND)
+        if audio.isOpenSound == 0 then
+            audio.isOpenSound = 1
+        else
+            audio.isOpenSound = 0
+        end
+        CommonUtils:saveData(audio.AUDIO_MUSIC,audio.isOpenSound)
+    else
+        audio.isOpenMusic = CommonUtils:getIntData(audio.AUDIO_MUSIC)
+        if audio.isOpenMusic == 0 then
+            audio.isOpenMusic = 1
+            audio.playMusic(audio.bgFilename,true)
+        else
+            audio.isOpenMusic = 0
+            audio.stopMusic()
+        end
+        CommonUtils:saveData(audio.AUDIO_MUSIC,audio.isOpenMusic)
+
+    end
 end
 
 --------------------------------
@@ -165,9 +190,9 @@ function audio.playMusic(filename, isLoop)
     if type(isLoop) ~= "boolean" then isLoop = true end
     audio.bgFilename = filename
     audio.stopMusic()
-    -- if(not gameData.data.musicToggle)then
-    --     return
-    -- end
+    if audio.isOpenMusic == 0 then
+        return
+    end
     if DEBUG > 1 then
         printInfo("audio.playMusic() - filename: %s, isLoop: %s", tostring(filename), tostring(isLoop))
     end
@@ -290,9 +315,9 @@ function audio.playSound(filename, isLoop)
         printError("audio.playSound() - invalid filename")
         return
     end
-    -- if(not gameData.data.soundToggle)then
-        -- return
-    -- end
+    if audio.isOpenSound == 0 then
+        return
+    end
     if type(isLoop) ~= "boolean" then isLoop = false end
     if DEBUG > 1 then
         printInfo("audio.playSound() - filename: %s, isLoop: %s", tostring(filename), tostring(isLoop))
@@ -448,4 +473,5 @@ function audio.unloadSound(filename)
     sharedEngine:unloadEffect(filename)
 end
 
+audio:initEvent()
 return audio

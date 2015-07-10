@@ -22,7 +22,6 @@ ShakeAction = class("ShackAction", function(self,node,duration,strength_x,streng
 	temp.m_initial_x = temp.node_:getPositionX()
 	temp.m_initial_y = temp.node_:getPositionY()
 	temp.ispause = true
-	temp.parent = nil
 	temp.isforever_ = isforever or false
 	return temp
 end)

@@ -1,7 +1,9 @@
 --
--- Author: ffl
+-- Author: 公共定义
 -- Date: 2015-07-02 13:58:41
 --
+SEED_CRYPTO = "core_0123"
+
 EVENT_SCORE_CHANGE = "EVENT_SCORE_CHANGE" --回合分数改变
 EVENT_PAUSE = "EVENT_PAUSE" --游戏暂停
 EVENT_CONTINUE = "EVENT_CONTINUE" --游戏继续

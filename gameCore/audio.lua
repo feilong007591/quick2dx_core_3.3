@@ -34,51 +34,43 @@ THE SOFTWARE.
 local audio = {}
 local sharedEngine = cc.SimpleAudioEngine:getInstance()
 
-
-audio.AUDIO_SOUND = 20000
-audio.AUDIO_MUSIC = 20001
+audio.AUDIO_INIT = "AUDIO_INIT"
+audio.AUDIO_SOUND = "AUDIO_SOUND"
+audio.AUDIO_MUSIC = "AUDIO_MUSIC"
 audio.bgFilename = nil
 audio.soundHandle = nil
-audio.isOpenSound = 1
-audio.isOpenMusic = 1
+audio.isOpenSound = true
+audio.isOpenMusic = true
 -- start --
 
+local userDefault = cc.UserDefault:getInstance()
 function audio.initEvent()
-    local initsound = CommonUtils:hasData(audio.AUDIO_SOUND)
+    local initsound = userDefault:getBoolForKey(audio.AUDIO_INIT)
     if not initsound then
-        CommonUtils:saveData(audio.AUDIO_SOUND,1)
-    end
-    local initmusic = CommonUtils:hasData(audio.AUDIO_MUSIC)
-    if not initmusic then
-        CommonUtils:saveData(audio.AUDIO_MUSIC,1)
-    end
+        userDefault:setBoolForKey(audio.AUDIO_INIT,true)
 
-    audio.isOpenSound = CommonUtils:getIntData(audio.AUDIO_SOUND)
-    audio.isOpenMusic = CommonUtils:getIntData(audio.AUDIO_MUSIC)
+        userDefault:setBoolForKey(audio.AUDIO_SOUND,audio.soundHandle)
+        userDefault:setBoolForKey(audio.AUDIO_MUSIC,audio.isOpenSound)
+    else
+        audio.isOpenSound = userDefault:getBoolForKey(audio.AUDIO_SOUND)
+        audio.isOpenMusic = userDefault:getBoolForKey(audio.AUDIO_MUSIC)
+    end
 end
 
 
 --通过设置界面开关，改变音乐状态
 function audio.changeToggle(audioType)
     if audio.AUDIO_SOUND == audioType then
-         audio.isOpenSound = CommonUtils:getIntData(audio.AUDIO_SOUND)
-        if audio.isOpenSound == 0 then
-            audio.isOpenSound = 1
-        else
-            audio.isOpenSound = 0
-        end
-        CommonUtils:saveData(audio.AUDIO_MUSIC,audio.isOpenSound)
+        audio.isOpenSound = not audio.isOpenSound
+        userDefault:setBoolForKey(audio.AUDIO_MUSIC,audio.isOpenSound)
     else
-        audio.isOpenMusic = CommonUtils:getIntData(audio.AUDIO_MUSIC)
-        if audio.isOpenMusic == 0 then
-            audio.isOpenMusic = 1
+        audio.isOpenMusic = not audio.isOpenMusic
+        if audio.isOpenMusic then
             audio.playMusic(audio.bgFilename,true)
         else
-            audio.isOpenMusic = 0
             audio.stopMusic()
         end
-        CommonUtils:saveData(audio.AUDIO_MUSIC,audio.isOpenMusic)
-
+        userDefault:setBoolForKey(audio.AUDIO_SOUND,audio.soundHandle)
     end
 end
 
